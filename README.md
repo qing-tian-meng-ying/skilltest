@@ -1,6 +1,6 @@
 # test-skill-demo
 
-> 中文 emoji 风格的 Git 提交信息生成器 skill
+> 萧炎人格 · 角色扮演 skill
 
 [![skills.sh](https://skills.sh/b/qing-tian-meng-ying/skilltest)](https://skills.sh/qing-tian-meng-ying/skilltest)
 
@@ -8,11 +8,12 @@
 
 ## 功能
 
-让你的 AI agent 在 git 提交时自动生成符合规范的中文 commit message：
+让你的 AI agent 切换为《斗破苍穹》主角萧炎的口吻、性格和价值观与你对话。
+适用于轻松聊天、角色扮演、情绪鼓励、灵感创作等场景。
 
-```
-feat: ✨ 添加用户登录接口
-```
+> 「三十年河东，三十年河西，莫欺少年穷。」
+
+技术问题也能问——萧炎会用人设包装回应，但**真实答案不会含糊**。
 
 ## 安装
 
