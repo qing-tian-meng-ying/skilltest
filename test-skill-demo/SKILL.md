@@ -43,10 +43,25 @@ description: |
 
 **前置条件**：Python 3.8+（标准库即可，无需 pip install）
 
-**用法**：
+### ⚠️ 跨平台执行规则（agent 必读）
+
+不同操作系统的 Python 命令名不一致。**按以下顺序尝试，命中即停**：
+
+1. **优先**：`python3 scripts/xiaoyan.py ...`（macOS / Linux 标准）
+2. **回退 1**：`python scripts/xiaoyan.py ...`（部分 Windows / conda 环境）
+3. **回退 2**：`py scripts/xiaoyan.py ...`（Windows 官方安装器自带的 py launcher）
+4. **回退 3**：`uvx --from python python scripts/xiaoyan.py ...`（需要先装 uv）
+5. **终极兜底**：如果以上都失败（exit code 127 / 9009 / "command not found"），
+   **不要再重试脚本**——直接读 `assets/quotes.json` 自行选取语录拼装回应。
+
+**Windows exit code 9009** 和 Unix **exit code 127** 都意味着"命令本身不存在"，
+**不是**脚本错误，应当切换 Python 命令名再试，而不是修改参数。
+
+### 用法
 
 ```bash
-python scripts/xiaoyan.py --scene <场景> [--address <称呼>] [--context "<上下文>"] [--format json|text] [--seed N]
+# 跨平台首选写法
+python3 scripts/xiaoyan.py --scene <场景> [--address <称呼>] [--context "<上下文>"] [--format json|text] [--seed N]
 ```
 
 **场景枚举**：
@@ -70,11 +85,21 @@ python scripts/xiaoyan.py --scene <场景> [--address <称呼>] [--context "<上
 
 ```bash
 # 鼓励场景，固定种子用于复现
-python scripts/xiaoyan.py --scene encourage --address peer_male --seed 42
+python3 scripts/xiaoyan.py --scene encourage --address peer_male --seed 42
 
 # 技术问题，带上下文，纯文本输出
-python scripts/xiaoyan.py --scene tech --context "TypeError: undefined" --format text
+python3 scripts/xiaoyan.py --scene tech --context "TypeError: undefined" --format text
 ```
+
+### 静态资源兜底：`assets/quotes.json`
+
+如果脚本因环境问题完全跑不起来（没装 Python、命令不在 PATH 等），可以**直接读取**
+`assets/quotes.json`——它包含与脚本完全一致的语料库（场景、称呼、收尾），agent
+可以自行解析并拼装出与脚本同等质量的回应。
+
+读取方式（任选其一）：
+- 用 file 读取工具读 `assets/quotes.json` 后用 JSON 解析
+- 或在 shell 里 `cat assets/quotes.json`
 
 ---
 
@@ -90,14 +115,19 @@ python scripts/xiaoyan.py --scene tech --context "TypeError: undefined" --format
 
 1. **判断场景**：从 5 个 scene 中选一个最贴近的
 2. **判断称呼**：根据用户性别/年龄线索选 address；不确定时用 `peer_male`
-3. **执行脚本**（在 skill 目录下运行）：
+3. **执行脚本**（在 skill 目录下运行，**优先 `python3`**）：
    ```bash
-   python scripts/xiaoyan.py --scene <选中> --address <选中> --context "<用户情境一句话摘要>"
+   python3 scripts/xiaoyan.py --scene <选中> --address <选中> --context "<用户情境一句话摘要>"
    ```
-4. **解析输出**：取 JSON 中的 `render` 作为基底
-5. **润色再输出**：在 `render` 基础上加入针对用户情境的具体回应。**不要直接复读
+4. **错误处理**：
+   - exit code **9009**（Windows）或 **127**（Unix）→ Python 不在 PATH，
+     按"跨平台执行规则"换命令名重试（`python` → `py`）
+   - 全部失败 → 改用 `assets/quotes.json` 兜底，**不要继续重试脚本**
+   - 脚本本身报错（exit code 1/2）→ 检查参数是否符合 scene/address 枚举
+5. **解析输出**：取 JSON 中的 `render` 作为基底
+6. **润色再输出**：在 `render` 基础上加入针对用户情境的具体回应。**不要直接复读
    脚本输出**——脚本只是给你一个起点
-6. 如果是技术问题，按"模板 1"格式：人设开场 → 真实答案 → 人设收尾
+7. 如果是技术问题，按"模板 1"格式：人设开场 → 真实答案 → 人设收尾
 
 ### 何时跳过脚本
 
