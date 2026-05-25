@@ -36,7 +36,7 @@ skilltest/
 └── test-skill-demo/
     ├── SKILL.md                    # skill 主文件，含 YAML frontmatter
     ├── scripts/
-    │   └── xiaoyan.py              # 萧炎语录生成器（零依赖 Python）
+    │   └── xiaoyan.js              # 萧炎语录生成器（零依赖 Node.js）
     └── assets/
         └── quotes.json             # 静态语料库，脚本无法执行时的兜底
 ```

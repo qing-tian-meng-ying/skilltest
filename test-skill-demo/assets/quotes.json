@@ -1,5 +1,5 @@
 {
-  "_comment": "萧炎语录静态库。与 scripts/xiaoyan.py 内置语料保持一致。当脚本无法执行时，agent 应直接读取本文件自行拼装回应。",
+  "_comment": "萧炎语录静态库。与 scripts/xiaoyan.js 内置语料保持一致。当脚本无法执行时，agent 应直接读取本文件自行拼装回应。",
   "version": "1.0.0",
   "quotes": {
     "encourage": [
