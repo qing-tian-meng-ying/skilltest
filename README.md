@@ -34,7 +34,9 @@ npx skills add ./test-skill-demo
 skilltest/
 ├── README.md
 └── test-skill-demo/
-    └── SKILL.md          # skill 主文件，含 YAML frontmatter
+    ├── SKILL.md                    # skill 主文件，含 YAML frontmatter
+    └── scripts/
+        └── xiaoyan.py              # 萧炎语录生成器（零依赖 Python 脚本）
 ```
 
 ## 开发流程
